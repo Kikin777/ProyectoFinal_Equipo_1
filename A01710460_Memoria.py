@@ -1,12 +1,10 @@
-"""Memory, puzzle game of number pairs.
+"""Memoria, juego de pares de numeros.
 
-Exercises:
+Modificaciones realizadas:
 
-1. Count and print how many taps occur.
-2. Decrease the number of tiles to a 4x4 grid.
-3. Detect when all tiles are revealed.
-4. Center single-digit tile.
-5. Use letters instead of tiles.
+1. Contador de pares descubiertos en pantalla.
+2. Deteccion del fin de la partida.
+3. Tablero reducido a una cuadricula de 6x6.
 """
 
 from random import *
@@ -28,7 +26,7 @@ hide = [True] * COUNT
 
 
 def square(x, y):
-    "Draw white square with black outline at (x, y)."
+    "Dibuja un cuadro blanco con borde negro en (x, y)."
     up()
     goto(x, y)
     down()
@@ -41,17 +39,17 @@ def square(x, y):
 
 
 def index(x, y):
-    "Convert (x, y) coordinates to tiles index."
+    "Convierte coordenadas (x, y) al indice de la casilla."
     return int((x + OFFSET) // SIZE + ((y + OFFSET) // SIZE) * SIDE)
 
 
 def xy(count):
-    "Convert tiles count to (x, y) coordinates."
+    "Convierte el indice de una casilla a coordenadas (x, y)."
     return (count % SIDE) * SIZE - OFFSET, (count // SIDE) * SIZE - OFFSET
 
 
 def tap(x, y):
-    "Update mark and hidden tiles based on tap."
+    "Actualiza la marca y las casillas ocultas segun el clic."
     spot = index(x, y)
     mark = state['mark']
 
@@ -65,7 +63,7 @@ def tap(x, y):
 
 
 def draw():
-    "Draw image and tiles."
+    "Dibuja la imagen, las casillas y el marcador."
     clear()
     goto(0, 0)
     shape(car)
