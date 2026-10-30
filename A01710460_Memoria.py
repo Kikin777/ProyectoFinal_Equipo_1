@@ -15,36 +15,43 @@ from turtle import *
 from freegames import path
 
 car = path('car.gif')
-tiles = list(range(32)) * 2
+
+# Geometria del tablero: SIDE x SIDE casillas de SIZE pixeles cada una
+SIDE = 6
+SIZE = 60
+OFFSET = SIDE * SIZE // 2
+COUNT = SIDE * SIDE
+
+tiles = list(range(COUNT // 2)) * 2
 state = {'mark': None}
-hide = [True] * 64
+hide = [True] * COUNT
 
 
 def square(x, y):
-    """Draw white square with black outline at (x, y)."""
+    "Draw white square with black outline at (x, y)."
     up()
     goto(x, y)
     down()
     color('black', 'white')
     begin_fill()
     for count in range(4):
-        forward(50)
+        forward(SIZE)
         left(90)
     end_fill()
 
 
 def index(x, y):
-    """Convert (x, y) coordinates to tiles index."""
-    return int((x + 200) // 50 + ((y + 200) // 50) * 8)
+    "Convert (x, y) coordinates to tiles index."
+    return int((x + OFFSET) // SIZE + ((y + OFFSET) // SIZE) * SIDE)
 
 
 def xy(count):
-    """Convert tiles count to (x, y) coordinates."""
-    return (count % 8) * 50 - 200, (count // 8) * 50 - 200
+    "Convert tiles count to (x, y) coordinates."
+    return (count % SIDE) * SIZE - OFFSET, (count // SIDE) * SIZE - OFFSET
 
 
 def tap(x, y):
-    """Update mark and hidden tiles based on tap."""
+    "Update mark and hidden tiles based on tap."
     spot = index(x, y)
     mark = state['mark']
 
@@ -57,13 +64,13 @@ def tap(x, y):
 
 
 def draw():
-    """Draw image and tiles."""
+    "Draw image and tiles."
     clear()
     goto(0, 0)
     shape(car)
     stamp()
 
-    for count in range(64):
+    for count in range(COUNT):
         if hide[count]:
             x, y = xy(count)
             square(x, y)
