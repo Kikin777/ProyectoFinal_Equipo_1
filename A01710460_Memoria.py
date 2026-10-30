@@ -92,6 +92,15 @@ def draw():
     write('Pares: {} de {}'.format(state['pairs'], COUNT // 2),
           font=('Arial', 14, 'normal'))
 
+    # La partida termina cuando ya no queda ninguna casilla oculta
+    if not any(hide):
+        up()
+        goto(0, 0)
+        color('red')
+        write('Ganaste!', align='center', font=('Arial', 32, 'bold'))
+        update()
+        return
+
     update()
     ontimer(draw, 100)
 
