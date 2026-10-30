@@ -23,7 +23,7 @@ OFFSET = SIDE * SIZE // 2
 COUNT = SIDE * SIDE
 
 tiles = list(range(COUNT // 2)) * 2
-state = {'mark': None}
+state = {'mark': None, 'pairs': 0}
 hide = [True] * COUNT
 
 
@@ -61,6 +61,7 @@ def tap(x, y):
         hide[spot] = False
         hide[mark] = False
         state['mark'] = None
+        state['pairs'] += 1  # se acaba de descubrir un par
 
 
 def draw():
@@ -83,6 +84,13 @@ def draw():
         goto(x + 2, y)
         color('black')
         write(tiles[mark], font=('Arial', 30, 'normal'))
+
+    # Marcador arriba del tablero con los pares descubiertos
+    up()
+    goto(-OFFSET, OFFSET + 10)
+    color('black')
+    write('Pares: {} de {}'.format(state['pairs'], COUNT // 2),
+          font=('Arial', 14, 'normal'))
 
     update()
     ontimer(draw, 100)
