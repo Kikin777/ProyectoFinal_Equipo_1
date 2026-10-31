@@ -14,9 +14,10 @@ from freegames import path
 
 car = path('car.gif')
 
-# Geometria del tablero: SIDE x SIDE casillas de SIZE pixeles cada una
+# Geometria del tablero: SIDE x SIDE casillas de SIZE pixeles cada una.
+# SIDE * SIZE debe cubrir los 400 px de la imagen para que no se asome.
 SIDE = 6
-SIZE = 60
+SIZE = 66
 OFFSET = SIDE * SIZE // 2
 COUNT = SIDE * SIDE
 
@@ -50,6 +51,10 @@ def xy(count):
 
 def tap(x, y):
     "Actualiza la marca y las casillas ocultas segun el clic."
+    # Los clics fuera del tablero se ignoran
+    if not (-OFFSET <= x < OFFSET and -OFFSET <= y < OFFSET):
+        return
+
     spot = index(x, y)
     mark = state['mark']
 
@@ -85,7 +90,7 @@ def draw():
 
     # Marcador arriba del tablero con los pares descubiertos
     up()
-    goto(-OFFSET, OFFSET + 10)
+    goto(-OFFSET, OFFSET + 8)
     color('black')
     write('Pares: {} de {}'.format(state['pairs'], COUNT // 2),
           font=('Arial', 14, 'normal'))
@@ -93,9 +98,9 @@ def draw():
     # La partida termina cuando ya no queda ninguna casilla oculta
     if not any(hide):
         up()
-        goto(0, 0)
+        goto(OFFSET, OFFSET + 8)
         color('red')
-        write('Ganaste!', align='center', font=('Arial', 32, 'bold'))
+        write('Ganaste!', align='right', font=('Arial', 16, 'bold'))
         update()
         return
 
@@ -104,7 +109,7 @@ def draw():
 
 
 shuffle(tiles)
-setup(420, 420, 370, 0)
+setup(440, 470, 370, 0)
 addshape(car)
 hideturtle()
 tracer(False)
