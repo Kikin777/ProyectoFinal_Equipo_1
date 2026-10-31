@@ -55,5 +55,31 @@ pip install freegames
 python A01710460_Memoria.py
 ```
 
-Ticatactoe:
-cambios...
+Ticatactoe
+
+**Alumno:** Paris Medina Rivera (A01754382)
+**Juego modificado:** Tic Tac Toe (`tictactoe.py`)
+**Rama de trabajo:** `A01754382_tictactoe`
+
+### Descripción del juego
+
+Juego de gato para dos jugadores en el que se turnan para marcar casillas de un tablero de 3x3. El primer jugador usa la "X" y el segundo la "O". Gana quien logre alinear tres símbolos iguales en una fila, columna o diagonal.
+
+### Modificaciones realizadas
+
+1. **Tamaño, color y centrado de los símbolos.** Se modificaron las funciones `drawx` y `drawo`: la "X" se dibuja en azul y la "O" en rojo, ambas con un trazo más grueso (`width(8)`). Las coordenadas se calcularon a partir del tamaño de la casilla (133 px) para que cada símbolo quede centrado.
+
+2. **Validación de casillas ocupadas.** Se agregó el diccionario `board`, que guarda qué jugador ocupó cada casilla. En `tap` se revisa si la casilla ya existe en `board`; si es así, se ignora el clic y el turno no cambia.
+
+3. **Detección del fin del juego.** Se agregaron la lista `LINES` con las 8 combinaciones ganadoras y la función `winner`, que se ejecuta después de cada jugada. Si hay ganador se muestra `¡Ganó X!` o `¡Ganó O!` sobre el tablero; si las 9 casillas se llenan sin ganador se muestra `¡Empate!`. Al terminar, la llave `over` del estado bloquea los clics siguientes.
+
+4. **Traducción de comentarios.** Los docstrings y comentarios del código original se tradujeron al español para unificar el idioma del archivo.
+
+### Proceso seguido
+
+Se clonó el repositorio y se creó la rama `A01754382_tictactoe` a partir de `main`. El juego se descargó con `python3 -m freegames copy tictactoe`. Cada modificación se trabajó y registró en un commit independiente. Al terminar, la rama se fusionó a `main` mediante merge.
+
+
+
+
+
