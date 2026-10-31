@@ -1,5 +1,4 @@
-"""Tic Tac Toe
-
+"""
 Exercises
 
 1. Give the X and O a different color and width.
@@ -46,17 +45,26 @@ def floor(value):
 
 state = {'player': 0}
 players = [drawx, drawo]
+board = {}  # casilla (x, y) -> jugador que la ocupa
 
 
 def tap(x, y):
-    """Draw X or O in tapped square."""
+    """Draw X or O in grid box."""
     x = floor(x)
     y = floor(y)
+    cell = (x, y)
+
+    if cell in board:  # casilla ocupada: ignorar el click
+        return
+
     player = state['player']
     draw = players[player]
     draw(x, y)
+    board[cell] = player
     update()
     state['player'] = not player
+players = [drawx, drawo]
+
 
 
 setup(420, 420, 370, 0)
