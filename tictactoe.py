@@ -43,26 +43,69 @@ def floor(value):
     return ((value + 200) // 133) * 133 - 200
 
 
-state = {'player': 0}
+state = {'player': 0, 'over': False}
 players = [drawx, drawo]
 board = {}  # casilla (x, y) -> jugador que la ocupa
+
+CELLS = (-200, -67, 66)  # coordenadas de las 3 columnas/filas
+NAMES = ['X', 'O']
+
+# Las 8 combinaciones ganadoras
+LINES = []
+for a in CELLS:
+    LINES.append([(a, b) for b in CELLS])  # columnas
+    LINES.append([(b, a) for b in CELLS])  # filas
+LINES.append([(c, c) for c in CELLS])  # diagonal
+LINES.append([(CELLS[i], CELLS[2 - i]) for i in range(3)])  # otra diagonal
+
+
+def winner():
+    """Return winning player (0 or 1) or None."""
+    for a, b, c in LINES:
+        if a in board and b in board and c in board:
+            if board[a] == board[b] == board[c]:
+                return board[a]
+    return None
+
+
+def show_message(text):
+    """Write message above the board."""
+    up()
+    goto(0, 205)
+    color('black')
+    write(text, align='center', font=('Arial', 18, 'bold'))
+    update()
 
 
 def tap(x, y):
     """Draw X or O in grid box."""
+    if state['over']:  # juego terminado: ignorar clicks
+        return
+
     x = floor(x)
     y = floor(y)
-    cell = (x, y)
 
-    if cell in board:  # casilla ocupada: ignorar el click
+    if x not in CELLS or y not in CELLS:  # click fuera del tablero
+        return
+
+    cell = (x, y)
+    if cell in board:
         return
 
     player = state['player']
-    draw = players[player]
-    draw(x, y)
+    players[player](x, y)
     board[cell] = player
     update()
-    state['player'] = not player
+
+    result = winner()
+    if result is not None:
+        show_message(f'¡Ganó {NAMES[result]}!')
+        state['over'] = True
+    elif len(board) == 9:
+        show_message('¡Empate!')
+        state['over'] = True
+    else:
+        state['player'] = int(not player)
 players = [drawx, drawo]
 
 
